@@ -1,0 +1,163 @@
+from random import *
+print("WELCOME TO HYDROBANK")
+acc = dict()
+accno,value,tf,count,mstr = 0,0,0,0,1475963
+check = set()
+ch = "y"
+while ch == "y" or ch =="Y" or ch == "yes" or ch == "Yes" or ch == "YES":
+    print(
+    '''
+    1.OPEN ACCOUNT
+    2.DEPOSITE
+    3.WITHDRAWAL
+    4.BALANCE INQUIRY
+    5.SHOW DETAILS OF REGISTERED ACCOUNTS
+    6.MONEY TRANSFER
+    7.CLOSE ACCOUNT
+    8.EXIT
+    ''')
+    a = int(input("PROVIDE A  VALID INPUT : "))
+    if a==1:
+        accid = int(input("ENTER ID : "))
+        if accid not in check:                
+            accn = input("ACCOUNT HOLDER NAME : ")
+            value = int(input("INITIAL AMOUNT : "))
+            pin = int(input("ENTER YOUR 4 DIGIT PIN : "))
+            count = len(str(pin))
+            if count == 4:
+                captcha = str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9))
+                print("CAPTCHA :",captcha)
+                c1 = input("ENTER CAPTCHA : ")
+                if captcha == c1:
+                    acc[accid] = [accid,accn,value,bin(pin)]
+                    check.add(accid)
+                    print("\nTHANKS FOR BANKING WITH HYDROBANK")
+                else:
+                    print("INVALID CAPTCHA!!!")
+            else:
+                print("PLEASE GIVE A VALID INPUT OF 4 DIGIT NUMBER.")
+        elif accid in check:
+            print("ID ALREADY EXIST!!!")
+    elif a==2:
+        d = int(input("ENTER ID : "))
+        if d in check:
+            d1 = int(input("Amount you want to Deposite : "))
+            p1 = int(input("ENTER YOUR 4 DIGIT PIN : "))
+            count = len(str(p1))
+            if count == 4:
+                if bin(p1) == acc[d][3]:
+                    acc[d][2] += d1
+                    print("AMOUNT DEPOSITED!!!\n")
+                    print("BALANCE IN YOUR ACCOUNT IS : Rs.",acc[accid][2],'\n')
+                else:
+                    print("INVALID PIN!!!")
+            else:
+                print("PLEASE GIVE A VALID INPUT OF 4 DIGIT NUMBER.")
+        elif d not in check:
+            print("ID DOES NOT EXIST!!!")
+    elif a==3:
+        d = int(input("Provide your Id : "))
+        if d in check:
+            d1 = int(input("Amount you want to Withdraw : "))
+            if d1 <= acc[d][2]:
+                p1 = int(input("ENTER YOUR 4 DIGIT PIN :"))
+                count = len(str(p1))
+                if count == 4:
+                    if bin(p1)==acc[d][3]:
+                        acc[d][2] -= d1
+                        print("AMOUNT DEDUCTED\n")
+                        print("BALANCE IN YOUR ACCOUNT IS : Rs.",acc[accid][2],'\n')
+                    else:
+                        print("INVALID PIN!!!")
+                else:
+                    print("PLEASE GIVE A VALID INPUT OF 4 DIGIT NUMBER.")
+            else:
+                print("AMOUNT EXCEEDED MAX. AMOUNT")
+        else:
+            print("ID DOES NOT EXIST!!!")
+    elif a==4:
+        d = int(input("ENTER ID : "))
+        if d in check:
+            p1 = int(input("ENTER YOUR 4 DIGIT PIN : "))
+            count = len(str(p1))
+            if count == 4:
+                if bin(p1)== acc[d][3]:
+                    captcha = str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9))
+                    print("CAPTCHA :",captcha)
+                    c1 = input("ENTER CAPTCHA : ")
+                    if captcha == c1:
+                        print("\nBALANCE IN YOUR ACCOUNT IS : Rs.",acc[accid][2],"\n")
+                    else:
+                        print("INVALID CAPTCHA!!!")
+                else:
+                    print("INVALID PIN!!!")
+            else:
+                print("PLEASE GIVE A VALID INPUT OF 4 DIGIT NUMBER.")
+        else:
+            print("ID DOES NOT EXIST!!!")
+    elif a==5:
+        mstrk = int(input("PLEASE PROVIDE MASTER AXIS KEY : "))
+        if mstrk==mstr:
+            for i in check:
+                accid=i
+                print(f'''
+                    ACCOUNT ID         : {acc[accid][0]}
+                    ACCOUNT NAME       : {acc[accid][1]}
+                    SAVINGS IN ACCOUNT : {acc[accid][2]}
+                    ''')
+            print("\nPASSWORD IS CARRIED BY USER ONLY")
+        else:
+            print("INVALID MASTER KEY!!")
+    elif a==6:
+        d = int(input("ENTER YOUR ID : "))  
+        if d in check:
+            tf = int(input("ENTER ID OF  ACCOUNT YOU WANT TO TRANSFER : "))
+            if tf in check:
+                p1 = int(input("ENTER YOUR 4 DIGIT PIN :"))
+                count = len(str(p1))
+                if count == 4:
+                    if bin(p1)==acc[d][3]:
+                        tfa = int(input("ENTER AMOUNT YOU WANT TO TRANSFER : "))
+                        captcha = str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9))
+                        print("CAPTCHA : ",captcha)
+                        c1 =input("ENTER CAPTCHA : ")
+                        if c1 == captcha:    
+                            acc[d][2] -= tfa
+                            acc[tf][2] += tfa
+                            print("AMOUNT TRANSFERED\n")
+                            print("BALANCE IN YOUR ACCOUNT IS : Rs.",acc[accid][2],'\n')
+                        else:
+                            print("INVALID CAPTCHA!!!")
+                    else:
+                        print("INVALID PIN!!!")
+            else:
+                print("ID DOES NOT EXIST")
+        else:
+            print("ID DOES NOT EXIST")
+    elif a==7:
+        d = int(input("ENTER ID OF ACCOUNT YOU WANT TO REMOVE : "))
+        if d in check:
+            p1 = int(input("ENTER YOUR 4 DIGIT PIN : "))
+            count = len(str(p1))
+            if count == 4:
+                if bin(p1) ==acc[d][3]:
+                    captcha = str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9)) + str(randint(0,9))
+                    print("CAPTCHA : ",captcha)
+                    c1 =input("ENTER CAPTCHA : ")
+                    if c1 == captcha:
+                        del acc[d]
+                        check.remove(d)
+                        print("ACCOUNT REMOVED")
+                    else:
+                        print("INVALID CAPTCHA!!!")
+                else:
+                    print("INVALID PIN!!!")
+            else:
+                print("ID DOES NOT EXIST")    
+    elif a==8:
+        exit()
+    else:
+        print("INVALID ENTRY!!!")
+    ch = input("DO YOU WANT TO CONTINUE : ")
+    print('''=======================================================================================================================================================================''')
+input("THANKS FOR BEING A PART OF US.'-'")
